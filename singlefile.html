@@ -1526,9 +1526,15 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
         }
     </script>
     <script>
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js");
-        }
+if ("serviceWorker" in navigator) {
+  fetch("sw.js")
+    .then(r => r.text())
+    .then(code => {
+      const blob = new Blob([code], { type: "text/javascript" });
+      const url = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(url, { scope: "/" });
+    });
+}
     </script>
 </body>
 </html>
